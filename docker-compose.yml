@@ -1,6 +1,6 @@
 version: '3'
 services:
-    notifications_queue:
+    notifications-queue:
         build: ./adapted-rabbitmq
         restart: always
 
@@ -9,27 +9,26 @@ services:
           #- "15672:15672"
           #- "5672:5672"
 
-    notifications_push_service:
+    notifications-push-service:
         build: ./job-scheduler-notification-push-service
         restart: always
         depends_on:
-            - notifications_queue
+            - notifications-queue
         ports:
             - "9030:9030"
-    
-    job_scheduler_front_end:
+
+    job-scheduler-front-end:
         build: ./job-scheduler-frontend
         restart: always
         depends_on:
-            - job_scheduler_server
+            - job-scheduler-server
         ports:
             - "3000:3000"
 
-    job_scheduler_server:
+    job-scheduler-server:
         build: ./job-scheduler-server
         restart: always
         depends_on:
-            - notifications_push_service
+            - notifications-push-service
         ports:
             - "5000:5000"
-

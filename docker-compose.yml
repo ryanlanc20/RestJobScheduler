@@ -1,0 +1,35 @@
+version: '3'
+services:
+    notifications_queue:
+        build: ./adapted-rabbitmq
+        restart: always
+
+        # Uncomment this for RabbitMQ debug/management
+        #ports:
+          #- "15672:15672"
+          #- "5672:5672"
+
+    notifications_push_service:
+        build: ./job-scheduler-notification-push-service
+        restart: always
+        depends_on:
+            - notifications_queue
+        ports:
+            - "9030:9030"
+    
+    job_scheduler_front_end:
+        build: ./job-scheduler-frontend
+        restart: always
+        depends_on:
+            - job_scheduler_server
+        ports:
+            - "3000:3000"
+
+    job_scheduler_server:
+        build: ./job-scheduler-server
+        restart: always
+        depends_on:
+            - notifications_push_service
+        ports:
+            - "5000:5000"
+

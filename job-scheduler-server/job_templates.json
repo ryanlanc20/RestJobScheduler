@@ -1,0 +1,84 @@
+{
+    "birthday_notification_job": {
+        "type": "birthday_notification_job",
+        "startInSeconds": 10,
+        "userTriggered": false,
+        "rescheduleAfterTermination": true,
+        "payload_schema": {
+            "profiles": {"type":"uint","range":[0,1000]}
+        },
+        "payload": {
+            "profiles": 1000
+        }
+    },
+    "profile_stats_aggregator_job": {
+        "type": "profile_stats_aggregator_job",
+        "startInSeconds": 5,
+        "userTriggered": false,
+        "rescheduleAfterTermination": true,
+        "payload_schema": {
+            "profiles": {"type": "uint","range":[0,1000]}
+        },
+        "payload": {
+            "profiles": 100
+        }
+    },
+    "profile_archive_generator_job": {
+        "type": "profile_archive_generator_job",
+        "startInSeconds": 3,
+        "userTriggered": true,
+        "rescheduleAfterTermination": false,
+        "payload_schema": {
+            "user_id": {"type": "uint","minValue": 0, "maxValue": null,"required":true,"label": "User Id"},
+            "filter": {"type": "options","options":["location_history","likes"],"required":true,"label":"Filters"},
+            "job_type": null
+        },
+        "payload": {
+            "user_id": 0,
+            "filter": ["location_history","activity"],
+            "job_type": ""
+        }
+    },
+    "otp_send_job": {
+        "type": "otp_send_job",
+        "startInSeconds": 1,
+        "userTriggered": true,
+        "rescheduleAfterTermination": false,
+        "payload_schema": {
+            "user_id": {"type": "uint","minValue": 0,"maxValue": null,"required": true,"label": "User Id"},
+            "job_type": null
+        },
+        "payload": {
+            "user_id": 0,
+            "job_type": ""
+        }
+    },
+    "forgot_password_job": {
+        "type": "forgot_password_job",
+        "startInSeconds": 1,
+        "userTriggered": true,
+        "rescheduleAfterTermination": false,
+        "payload_schema": {
+            "user_id": {"type": "uint","minValue": 0,"maxValue": null,"required": true,"label": "User Id"},
+            "job_type": null
+        },
+        "payload": {
+            "user_id": 0,
+            "job_type": ""
+        }
+    },
+    "relationship_rankings_job": {
+        "type": "relationship_rankings_job",
+        "startInSeconds": 10,
+        "userTriggered": false,
+        "rescheduleAfterTermination": true,
+        "payload_schema": {
+            "user_id": {"type": "uint","minValue": 0,"maxValue": null,"required": true,"label": "User Id"},
+            "job_type": null
+        },
+        "payload": {
+            "user_id": 0,
+            "job_type": ""
+        }
+    }
+}

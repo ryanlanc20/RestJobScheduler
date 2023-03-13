@@ -65,10 +65,10 @@ if __name__ == "__main__":
     # Schedule periodic jobs
     for (job_type,job_tpl) in job_templates.items():
         if not job_tpl["userTriggered"]:
-            job_id = JobScheduler.createJobId(job_type)
+            job_id = JobScheduler.create_job_id(job_type)
             payload = job_tpl["payload"].copy()
             payload["job_id"] = job_id
-            JobScheduler.scheduleJob(
+            JobScheduler.schedule_job(
                 job_tpl["startInSeconds"],
                 getHandler(handlerMappings[job_type],payload),
                 job_id,

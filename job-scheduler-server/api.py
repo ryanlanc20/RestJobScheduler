@@ -38,9 +38,9 @@ def getAPIObject(job_templates,handlerMappings):
                 return {"msg": "Payload fields do not match schema."},400
             payloadData = reqBody
 
-        job_id = JobScheduler.createJobId(jobtype)
+        job_id = JobScheduler.create_job_id(jobtype)
         payloadData["job_id"] = job_id
-        jobMetadata = JobScheduler.scheduleJob(template["startInSeconds"],getHandler(handlerMappings[jobtype],payloadData),job_id,jobtype)
+        jobMetadata = JobScheduler.schedule_job(template["startInSeconds"],getHandler(handlerMappings[jobtype],payloadData),job_id,jobtype)
 
         didSubmitNotification = submit_notification({"notification_type": "job_created","data":jobMetadata})
 
@@ -48,7 +48,7 @@ def getAPIObject(job_templates,handlerMappings):
     
     @app.route("/jobs",methods=["GET"])
     def getAllJobs():
-        return JobScheduler.getActiveJobs()
+        return JobScheduler.get_active_jobs()
     
     @app.route("/job/<jobid>/terminate",methods=["POST"])
     def teminateJob(jobid):
@@ -64,11 +64,11 @@ def getAPIObject(job_templates,handlerMappings):
         if not payload["type"] in job_templates.keys():
             return {"msg": "No job template exists for the specified type"},400
         
-        result = JobScheduler.cancelJob(jobid)
+        result = JobScheduler.cancel_job(jobid)
         job_template = job_templates[payload["type"]]
         if job_template["rescheduleAfterTermination"]:
-            job_id = JobScheduler.createJobId(payload["type"])
-            newJob = JobScheduler.scheduleJob(job_template["startInSeconds"],getHandler(handlerMappings[payload["type"]],job_template["payload"]),job_id,payload["type"])
+            job_id = JobScheduler.create_job_id(payload["type"])
+            newJob = JobScheduler.schedule_job(job_template["startInSeconds"],getHandler(handlerMappings[payload["type"]],job_template["payload"]),job_id,payload["type"])
             submit_notification({"notification_type": "job_created","data":newJob})
 
         didSubmitNotification = submit_notification({"notification_type": "job_terminated","data":result})

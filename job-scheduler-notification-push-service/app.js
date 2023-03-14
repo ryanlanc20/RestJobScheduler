@@ -16,7 +16,7 @@ io.on("connection",(socket) => {
     io.emit("notification",{"type":"job_complete"});
 });
 
-amqp.connect("amqp://notifications_queue?heartbeat=5",function(error0,connection){
+amqp.connect("amqp://notifications-queue?heartbeat=5",function(error0,connection){
     if (error0){
         throw error0;
     }

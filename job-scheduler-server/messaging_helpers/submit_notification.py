@@ -4,7 +4,7 @@ import json
 def submit_notification(notification):
     # TODO: Create connection manager class return connection object.
     try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host="notifications_queue"))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host="notifications-queue"))
         channel = connection.channel()
         channel.queue_declare(queue="notifications")
 

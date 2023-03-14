@@ -11,7 +11,7 @@ if __name__ == "__main__":
     import json
     from job_scheduler import JobScheduler
     from lazy_initializors.get_handler import getHandler
-    from api import getAPIObject
+    from api import get_api_object
     from optparse import OptionParser
     from inspect import getmembers,isfunction
 
@@ -77,5 +77,5 @@ if __name__ == "__main__":
 
     scheduler = JobScheduler()
     scheduler.start()
-    api = getAPIObject(job_templates,handlerMappings)
+    api = get_api_object(job_templates,handlerMappings)
     api.run("0.0.0.0",port)

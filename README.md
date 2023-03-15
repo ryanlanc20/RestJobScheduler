@@ -1,4 +1,5 @@
 # About RestJobScheduler
+
 This project is a distributed job scheduler, which allows engineers to schedule backend tasks (i.e., batch jobs)
 by consuming the HTTP RestAPI itself or using the UI provided. It allows engineers to create reusable job scheduling templates,
 which define a task, along with its required payload attributes and default values. These templates are used to instantiate and

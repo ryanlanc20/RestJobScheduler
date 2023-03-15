@@ -1,6 +1,7 @@
 import {useState,useEffect} from "react";
 import axios from "axios";
 import JobListItem from "./JobListItem.js";
+
 const JobsList = (props) => {
     const [jobs,setJobs] = useState({});
     const [errors,setErrors] = useState({});
@@ -17,8 +18,13 @@ const JobsList = (props) => {
     const updateJobListItem = (job_data) => {
         setJobs((jobs) => {
             let newJobs = {...jobs};
-            newJobs[job_data["job_id"]] = {"startTime":job_data["startTime"],"terminatedTime":job_data["terminateTime"],"state":job_data["state"],"job_type":job_data["job_type"],"job_id": job_data["job_id"]}
-            console.log(job_data);
+            newJobs[job_data["job_id"]] = {
+                "startTime":job_data["startTime"],
+                "terminatedTime":job_data["terminateTime"],
+                "state":job_data["state"],
+                "job_type":job_data["job_type"],
+                "job_id": job_data["job_id"]
+            }
             return newJobs;
         });
     };
@@ -32,13 +38,14 @@ const JobsList = (props) => {
     }
 
     useEffect(() => {
+
         axios.get("http://127.0.0.1:5000/jobs").then((response) => {
             setJobs(response.data);
         }).catch(() => {
             addError("failedFetchJobs","Failed to fetch jobs list from server");
         });
+
         props.eventListener.on("notification",(msg) => {
-            console.log(msg);
             msg = JSON.parse(msg);
             if (msg.notification_type === "job_terminated")
             {
@@ -62,7 +69,14 @@ const JobsList = (props) => {
                 </div>
                 <div class="card-body">
                         {
-                            Object.keys(errors).length > 0 ? <div className="alert alert-danger"><ul>{Object.values(errors).map((error) => <li>{error}</li>)}</ul></div> : ""
+                            Object.keys(errors).length > 0 ? 
+                                <div className="alert alert-danger">
+                                    <ul>
+                                        {Object.values(errors).map((error) => <li>{error}</li>)}
+                                    </ul>
+                                </div>
+                            : 
+                                ""
                         }
                         <i>Last update: {lastUpdateTime}</i>
                         <table className="table table-striped mt-4">
@@ -77,9 +91,6 @@ const JobsList = (props) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
-                                    
-                                }
                                 {
                                     Object.keys(jobs).length > 0 ?
                                         Object.entries(jobs).map(([job_id,job]) => 

@@ -1,8 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
-import CreateJobPage from './pages/CreateJobPage.js';
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import JobsList from './components/jobs/JobsList.js';
@@ -13,7 +10,6 @@ const notificationsSocket = socketIOClient("http://127.0.0.1:9030");
 
 function App() {
   const [schemas,setSchemas] = useState([]);
-  const [lastUpdateTime,setLastUpdateTime] = useState();
   const [showCreateJobForm,setShowCreateJobForm] = useState();
 
   const toggleCreateJobForm = () => {
@@ -30,7 +26,10 @@ function App() {
     <>
         <div class="main-content">
             <NavigationBar/>
-            <JobsList eventListener={notificationsSocket} toggleCreateJobForm={toggleCreateJobForm}/>
+            <JobsList
+                eventListener={notificationsSocket}
+                toggleCreateJobForm={toggleCreateJobForm}
+            />
         </div>
         {
             showCreateJobForm ?

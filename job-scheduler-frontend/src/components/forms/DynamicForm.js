@@ -17,26 +17,19 @@ const DynamicForm = (props) => {
         });
     };
 
-    const clearErrors = () => {
-        setErrors([]);
-    };
-
     const selectComponent = (schema,fieldName) => {
-        console.log(schema)
-        if (schema.type == "uint")
+        if (schema.type === "uint")
             return <UnsignedIntField isRequired={schema.isRequired} minValue={schema.minValue} maxValue={schema.maxValue} name={fieldName}/>
-        if (schema.type == "options")
+        if (schema.type === "options")
             return <OptionsField values={schema.options} name={fieldName}/>
     };
 
     const switchForm = (e) => {
-        console.log(e.target.value);
         setFormName(e.target.value);
     };
 
     const submitForm = (e) => {
         e.preventDefault();
-        console.log("Form submitted");
         
         let body = {};
 
@@ -45,8 +38,7 @@ const DynamicForm = (props) => {
             body[field] = e.target.elements[field].value;
         });
 
-        console.log(body);
-
+        // Create job
         axios.post("http://127.0.0.1:5000/create",body,{"headers":{"Content-Type":"multipart/form-data"}}).then((response) => {
             setSubmitSuccess("Successfully submitted form.");
         }).catch(() => {
@@ -67,7 +59,7 @@ const DynamicForm = (props) => {
                     errors.length > 0 ? 
                         <div class="alert alert-danger">
                             {
-                                errors.map((error) => {<li>{error}</li>})
+                                errors.map((error) => {return <li>{error}</li>})
                             }
                         </div> 
                     : 

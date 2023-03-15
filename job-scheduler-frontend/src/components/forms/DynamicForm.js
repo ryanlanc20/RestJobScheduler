@@ -29,6 +29,12 @@ const DynamicForm = (props) => {
     };
 
     const submitForm = (e) => {
+
+        // Reset error tracking
+        setErrors([]);
+        setSubmitSuccess(false);
+
+        // Prevent request to server
         e.preventDefault();
         
         let body = {};

@@ -54,44 +54,52 @@ const JobsList = (props) => {
     },[]);
 
     return (
-        <div class="container-md">
-            <i>Last update: {lastUpdateTime}</i>
-            {
-                Object.keys(errors).length > 0 ? Object.values(errors).map((error) => error) : ""
-            }
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Job Id</th>
-                        <th scope="col">Job Type</th>
-                        <th scope="col">Start Time</th>
-                        <th scope="col">End Time</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        
-                    }
-                    {
-                        Object.keys(jobs).length > 0 ?
-                            Object.entries(jobs).map(([job_id,job]) => 
-                                <JobListItem
-                                    job_id={job_id}
-                                    startTime={job["startTime"]}
-                                    terminatedTime={job["terminatedTime"]}
-                                    state={job["state"]}
-                                    addError={addError}
-                                    key={"job_"+job_id}
-                                    type={job.job_type}
-                                />
-                            )
-                        :
-                            "No jobs available"
-                    }
-                </tbody>
-            </table>
+        <div class="container-md mt-4">
+            <div className="card">
+                <div className="card-header">
+                    All jobs
+                    <button className="btn btn-primary float-end" onClick={props.toggleCreateJobForm}>Create job</button>
+                </div>
+                <div class="card-body">
+                        {
+                            Object.keys(errors).length > 0 ? <div className="alert alert-danger"><ul>{Object.values(errors).map((error) => <li>{error}</li>)}</ul></div> : ""
+                        }
+                        <i>Last update: {lastUpdateTime}</i>
+                        <table className="table table-striped mt-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Job Id</th>
+                                    <th scope="col">Job Type</th>
+                                    <th scope="col">Start Time</th>
+                                    <th scope="col">End Time</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    
+                                }
+                                {
+                                    Object.keys(jobs).length > 0 ?
+                                        Object.entries(jobs).map(([job_id,job]) => 
+                                            <JobListItem
+                                                job_id={job_id}
+                                                startTime={job["startTime"]}
+                                                terminatedTime={job["terminatedTime"]}
+                                                state={job["state"]}
+                                                addError={addError}
+                                                key={"job_"+job_id}
+                                                type={job.job_type}
+                                            />
+                                        )
+                                    :
+                                        "No jobs available"
+                                }
+                            </tbody>
+                        </table>
+                </div>
+            </div>
         </div>
     )
 };

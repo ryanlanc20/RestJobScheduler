@@ -14,6 +14,11 @@ const notificationsSocket = socketIOClient("http://127.0.0.1:9030");
 function App() {
   const [schemas,setSchemas] = useState([]);
   const [lastUpdateTime,setLastUpdateTime] = useState();
+  const [showCreateJobForm,setShowCreateJobForm] = useState();
+
+  const toggleCreateJobForm = () => {
+      setShowCreateJobForm((state) => !state);
+  };
 
   useEffect(()=>{
     axios.get("http://127.0.0.1:5000/schemas").then((response) => {
@@ -22,16 +27,26 @@ function App() {
   },[]);
 
   return (
-    <div className="App">
-        <i>Last update: {lastUpdateTime}</i>
-        <JobsList eventListener={notificationsSocket}/>
-        <div class="container-md">
-        <DynamicForm 
-            schemas={schemas}
-            urlPrefix={"http://127.0.0.1:5000/create"}
-        />
+    <>
+        <div class="main-content">
+            <NavigationBar/>
+            <JobsList eventListener={notificationsSocket} toggleCreateJobForm={toggleCreateJobForm}/>
         </div>
-    </div>
+        {
+            showCreateJobForm ?
+                <div class="overlay">
+                    <div class="container-md">
+                        <DynamicForm 
+                            schemas={schemas}
+                            urlPrefix={"http://127.0.0.1:5000/create"}
+                            closeBtn={<button class="btn btn-danger float-end" onClick={toggleCreateJobForm}>X</button>}
+                        />
+                    </div>
+                </div>
+            :
+            ""
+        }
+    </>
   );
 }
 

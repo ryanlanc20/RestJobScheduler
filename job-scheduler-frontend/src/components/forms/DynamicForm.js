@@ -58,6 +58,9 @@ const DynamicForm = (props) => {
         <div className="card">
             <div className="card-header">
                 Create new job
+                {
+                    "closeBtn" in props ? props.closeBtn : ""
+                }
             </div>
             <div class="card-body">
                 {

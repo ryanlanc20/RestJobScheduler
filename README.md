@@ -56,3 +56,6 @@ The Notifications Push Service receives dispatched notifications from the JobSch
    cd ./RestJobScheduler
    docker-compose up
 ```
+
+### Notifications Queue Service
+The Notifications Queue Service is a RabbitMQ instance, running an extended version of the image, and this image enables the management plugins.

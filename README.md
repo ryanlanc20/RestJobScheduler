@@ -5,6 +5,14 @@ by consuming the HTTP RestAPI itself or using the UI provided. It allows enginee
 which define a task, along with its required payload attributes and default values. These templates are used to instantiate and
 schedule jobs, as well as assisting with payload validation and the creation of dynamic front-end forms.
 
+## Features
+* HTTP Rest API
+* Web browser based UI to view jobs, create jobs and terminate jobs
+* Dynamic frontend form rendering (creates forms based on payload schema defined in job templates)
+* Real-time notifications (consumed by socket.io client)
+* Reusable job templates
+
+
 ## Architecture
 ![architecture](https://user-images.githubusercontent.com/32577906/225432070-efe31df8-8b78-4502-a371-a50a9bc57d5f.jpg)
 

@@ -31,3 +31,20 @@ The Frontend UI is written in React. It uses axios and socket.io to retrieve dat
     ```
     
 Note: When starting the frontend using either docker or docker-compose, a production build is created automatically with source mapping disabled. Currently, it is not possible to use hot-reloading whilst the react app is running inside the container. For development purposes, a development Dockerfile will be created soon to allow for hot-reloading and will ultimately keep the app in development mode. Alternatively, the frontend can be decoupled and simply run on localhost, whilst the rest of the application can run in docker.
+
+### JobScheduler
+The JobScheduler service exposes a HTTP Rest API, which can be used to create, view and terminate jobs. It uses the pika library to communicate with the message queue (used for job notifications). Just like with the frontend UI, it can also run as a standalone application on localhost, without other services running, since connection errors will not terminate the application. You can use the following methods to run the app.
+
+* Running on localhost
+    ```bash
+        cd ./job-scheduler-server
+        pip install pipenv
+        pipenv install
+        pipenv run <python-interpreter> scheduler.py
+    ```
+* Running as a standalone docker container
+    ```bash
+        cd ./job-scheduler-server
+        docker build ./ -t job-scheduler-server
+        docker run -p 5000:5000 job-scheduler-server
+    ```

@@ -48,3 +48,11 @@ The JobScheduler service exposes a HTTP Rest API, which can be used to create, v
         docker build ./ -t job-scheduler-server
         docker run -p 5000:5000 job-scheduler-server
     ```
+    
+### Notifications Push Service
+The Notifications Push Service receives dispatched notifications from the JobScheduler service and pushes them to the frontend. This cannot run as a standalone service and depends on a RabbitMQ instance. To run this service, it is best to run the entire application, using:
+
+```bash
+   cd ./RestJobScheduler
+   docker-compose up
+```

@@ -46,6 +46,26 @@ You can choose to duplicate an existing template and modify the values to suit y
 * If the userTriggered and rescheduleAfterTermination values are both set to true, this will allow users to run certain jobs (i.e., sending OTP) in an infinite loop. To avoid this situation, set rescheduleAfterTermination = false for user triggered jobs.
 * API payload data is not yet validated against the payload schema, but this is coming soon. However, the request body must currently contain the keys listed in the payload definition.
 
+#### Creating a job executor delegate function
+For any job template you define in job_templates.json, you also need to provide a callback function, which will be executed when your job is running. Simply create a function similar to the following:
+
+```python
+
+   import schedule
+   from job_scheduler import JobScheduler
+   from messaging_helpers.submit_notification import submit_notification
+   
+   def <job-type>(data):
+       # Do work here
+       
+       # Always end with the following three lines
+       result = JobScheduler.cancel_job(data["job_id"])
+       submit_notification({"notification_type": "job_terminated","data":result})
+       return schedule.CancelJob
+```
+
+This file must be named <job-type>.py and stored inside ./job-scheduler-server/job_schedule_handlers. The scheduling server will load these functions dynamically using the &lt;job-type&gt; value defined in your job templates. The server must be restarted for changes to take effect.
+
 ## Architecture
 ![architecture](https://user-images.githubusercontent.com/32577906/225432070-efe31df8-8b78-4502-a371-a50a9bc57d5f.jpg)
 

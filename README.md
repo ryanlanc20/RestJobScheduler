@@ -12,6 +12,39 @@ schedule jobs, as well as assisting with payload validation and the creation of 
 * Real-time notifications (consumed by socket.io client)
 * Reusable job templates
 
+## Notes on configurations
+
+### Updating RestAPI url and notifications push url in job-scheduler-frontend
+To modify the URLS for these services, navigate to ./job-scheduler-frontend/src/constants.js.
+If you are running the application in docker, you will need to run docker-compose down and then docker-compose up for changes to take effect.
+
+### Adding a new job template
+There are several example job templates already provided in ./job-scheduler-server/job_templates.json.
+You can choose to duplicate an existing template and modify the values to suit your needs. Alternatively, you can make a job template from scratch. In either case, you job template must adhere to the following schema.
+
+```
+"<job-type>": {
+        "type": "<job-type>",
+        "startInSeconds": <uint>,
+        "userTriggered": <bool>,
+        "rescheduleAfterTermination": <bool>,
+        "payload_schema": {
+            "<field-name-1>": {"type": "uint","minValue": <uint>, "maxValue": <uint>,"required":<bool>,"label": <string>},
+            "<field-name-2>": {"type": "options","options":<array-of-strings>,"required":<bool>,"label":<string>},
+            <add more fields here>
+        },
+        "payload": {
+            "profiles": <uint>
+        }
+}
+```
+
+#### Important notes on schema
+* &lt;job-type&gt; must be the same value in both instances
+* The userTriggered value determines the event type (i.e., true = user event, false = system event). User events can be triggered from the front-end application, but system events cannot. This means that the drop down box in the 'Create Job' form on the frontend only lists user triggered job types.
+* The rescheduleAfterTermination value determines if a job with the specified job type will be scheduled again. This might be suitable for periodic tasks (i.e., batch jobs), but not for sending one time passcodes.
+* If the userTriggered and rescheduleAfterTermination values are both set to true, this will allow users to run certain jobs (i.e., sending OTP) in an infinite loop. To avoid this situation, set rescheduleAfterTermination = false for user triggered jobs.
+* API payload data is not yet validated against the payload schema, but this is coming soon. However, the request body must currently contain the keys listed in the payload definition.
 
 ## Architecture
 ![architecture](https://user-images.githubusercontent.com/32577906/225432070-efe31df8-8b78-4502-a371-a50a9bc57d5f.jpg)

@@ -1,6 +1,7 @@
 import {useState,useEffect} from "react";
 import axios from "axios";
 import JobListItem from "./JobListItem.js";
+import {apiUrl} from "../../constants.js";
 
 const JobsList = (props) => {
     const [jobs,setJobs] = useState({});
@@ -39,7 +40,7 @@ const JobsList = (props) => {
 
     useEffect(() => {
 
-        axios.get("http://127.0.0.1:5000/jobs").then((response) => {
+        axios.get(`${apiUrl}/jobs`).then((response) => {
             setJobs(response.data);
         }).catch(() => {
             addError("failedFetchJobs","Failed to fetch jobs list from server");

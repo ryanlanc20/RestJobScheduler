@@ -2,6 +2,7 @@ import OptionsField from "./OptionsField";
 import UnsignedIntField from "./UnsignedIntField"
 import { useState } from "react";
 import axios from "axios";
+import {apiUrl} from "../../constants.js";
 
 const DynamicForm = (props) => {
 
@@ -45,7 +46,7 @@ const DynamicForm = (props) => {
         });
 
         // Create job
-        axios.post("http://127.0.0.1:5000/create",body,{"headers":{"Content-Type":"multipart/form-data"}}).then((response) => {
+        axios.post(`${apiUrl}/create`,body,{"headers":{"Content-Type":"multipart/form-data"}}).then((response) => {
             setSubmitSuccess("Successfully submitted form.");
         }).catch(() => {
             addError("Failed to submit form. Please try again soon.");

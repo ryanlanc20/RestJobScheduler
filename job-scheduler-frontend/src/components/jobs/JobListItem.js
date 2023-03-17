@@ -1,12 +1,13 @@
 import {useState} from "react";
 import axios from "axios";
+import { apiUrl } from "../../constants";
 
 const JobListItem = (props) => {
     const [,setStatus] = useState(props.state);
 
     const terminateAction = () => {
         // Cancel job
-        axios.post("http://127.0.0.1:5000/job/"+props.job_id+"/terminate",{"type":props.type},{"headers":{"Content-Type":"multipart/form-data"}}).then((response) => {
+        axios.post(`${apiUrl}/job/${props.job_id}/terminate`,{"type":props.type},{"headers":{"Content-Type":"multipart/form-data"}}).then((response) => {
             setStatus("Terminated");
         }).catch(() => {
             props.addError("Unable to terminate job");

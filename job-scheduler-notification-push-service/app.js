@@ -4,9 +4,10 @@ const amqp = require("amqplib/callback_api")
 
 const server = http.createServer();
 
+// TODO: Change CORS origin to relevant frontend url before deployment (i.e., https://restjobscheduler.com)
 const io = new Server(server,{
     cors: {
-      origin: "*",
+      origin: "http://localhost:3000",
       methods: ["GET", "POST"]
     }
 });

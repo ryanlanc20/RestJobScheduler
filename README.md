@@ -34,7 +34,7 @@ The Frontend UI is written in React. It uses axios and socket.io to retrieve dat
 * Running as a standalone docker container
     ```bash
         cd ./job-scheduler-frontend
-        docker build ./
+        docker build ./ -t job-scheduler-frontend
         docker run -p 3000:3000 job-scheduler-frontend
     ```
     

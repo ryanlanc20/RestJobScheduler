@@ -120,5 +120,34 @@ def get_api_object(job_templates,handler_mappings):
         })
 
         return {"msg": "Job terminated","pollForChanges": not did_submit_notification}
+    
+    @app.route("/job/<jobid>/progress",methods=["POST"])
+    def update_job_progress(jobid):
+        # Check if job exists
+        if jobid not in JobScheduler.jobs:
+            return {"msg": "Job not found"},404
+        
+        # Validate form data
+        form_data = dict(request.form)
+
+        if "completion_percent" not in form_data:
+            return {"msg": "Completion percent must be specified"},400
+        
+        percent = float(form_data["completion_percent"])
+        if percent < 0 or percent > 100:
+            return {"msg": "Percentage out of range"},400
+        
+        JobScheduler.update_job_progress(jobid,percent)
+
+        did_submit_notification = submit_notification({
+            "notification_type": "job_progress",
+            "data": {
+                "job_id": jobid,
+                "completion_percentage": percent
+            }
+        })
+
+        return {"msg": "Updated job progress"}
+        
 
     return app

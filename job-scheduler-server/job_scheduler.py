@@ -60,7 +60,8 @@ class JobScheduler(threading.Thread):
             "startTime": time.time()*1000,
             "terminateTime": -1,
             "state":"scheduled",
-            "job_type":job_type
+            "job_type":job_type,
+            "completion_percentage": 0
         }
 
         JobScheduler.jobs[job_id] = job
@@ -70,7 +71,8 @@ class JobScheduler(threading.Thread):
             "startTime":job["startTime"],
             "terminatedTime":job["terminateTime"],
             "state": job["state"],
-            "job_type":job_type
+            "job_type":job_type,
+            "completion_percentage": 0
         }
 
     @staticmethod
@@ -110,7 +112,12 @@ class JobScheduler(threading.Thread):
                 "startTime":job["startTime"],
                 "terminatedTime":job["terminateTime"],
                 "state":job["state"],
-                "job_type":job["job_type"]
+                "job_type":job["job_type"],
+                "completion_percentage": job["completion_percentage"]
             }
             for (job_id,job) in JobScheduler.jobs.items()
         }
+
+    @staticmethod
+    def update_job_progress(job_id,progress):
+        JobScheduler.jobs[job_id]["completion_percentage"] = progress

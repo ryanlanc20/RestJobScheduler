@@ -21,6 +21,7 @@ const JobListItem = (props) => {
             <td>{new Date(props.startTime).toUTCString()}</td>
             <td>{props.terminatedTime === -1 ? "N/A" : new Date(props.terminatedTime).toUTCString()}</td>
             <td>{props.state}</td>
+            <td>{props.progress}%</td>
             <td>
                 {
                     props.state !== "terminated" ? 

@@ -120,4 +120,14 @@ class JobScheduler(threading.Thread):
 
     @staticmethod
     def update_job_progress(job_id,progress):
-        JobScheduler.jobs[job_id]["completion_percentage"] = progress
+        job = JobScheduler.jobs[job_id]
+        job["completion_percentage"] = progress
+    
+        return {
+            "job_id": job_id,
+            "startTime": job["startTime"],
+            "terminateTime": job["terminateTime"],
+            "state": job["state"],
+            "job_type": job["job_type"],
+            "completion_percentage": job["completion_percentage"]
+        }

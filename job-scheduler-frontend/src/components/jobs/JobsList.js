@@ -24,7 +24,8 @@ const JobsList = (props) => {
                 "terminatedTime":job_data["terminateTime"],
                 "state":job_data["state"],
                 "job_type":job_data["job_type"],
-                "job_id": job_data["job_id"]
+                "job_id": job_data["job_id"],
+                "completion_percentage": job_data["completion_percentage"]
             }
             return newJobs;
         });
@@ -48,7 +49,7 @@ const JobsList = (props) => {
 
         props.eventListener.on("notification",(msg) => {
             msg = JSON.parse(msg);
-            if (msg.notification_type === "job_terminated")
+            if (msg.notification_type === "job_terminated" || msg.notification_type === "job_progress")
             {
                 setLastUpdateTime((new Date()).toUTCString());
                 updateJobListItem(msg["data"]);
@@ -103,6 +104,7 @@ const JobsList = (props) => {
                                                 addError={addError}
                                                 key={"job_"+job_id}
                                                 type={job.job_type}
+                                                progress={job["completion_percentage"]}
                                             />
                                         )
                                     :

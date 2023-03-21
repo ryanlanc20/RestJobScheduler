@@ -137,14 +137,11 @@ def get_api_object(job_templates,handler_mappings):
         if percent < 0 or percent > 100:
             return {"msg": "Percentage out of range"},400
         
-        JobScheduler.update_job_progress(jobid,percent)
+        result = JobScheduler.update_job_progress(jobid,percent)
 
         did_submit_notification = submit_notification({
             "notification_type": "job_progress",
-            "data": {
-                "job_id": jobid,
-                "completion_percentage": percent
-            }
+            "data": result
         })
 
         return {"msg": "Updated job progress"}

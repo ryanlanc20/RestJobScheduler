@@ -1,5 +1,6 @@
 import OptionsField from "./OptionsField";
 import UnsignedIntField from "./UnsignedIntField"
+import AlertsBox from "../alerts/AlertsBox.js";
 import { useState } from "react";
 import axios from "axios";
 import {apiUrl} from "../../constants.js";
@@ -8,7 +9,7 @@ const DynamicForm = (props) => {
 
     const [formName,setFormName] = useState(null);
     const [errors,setErrors] = useState([]);
-    const [submitSuccess,setSubmitSuccess] = useState(false);
+    const [successMsgs,setSuccessMsgs] = useState([]);
 
     const addError = (error) => {
         setErrors((errorList) => {
@@ -17,6 +18,14 @@ const DynamicForm = (props) => {
             return newErrorList;
         });
     };
+
+    const addSuccessMessage = (successMsg) => {
+        setSuccessMsgs((msgs) => {
+            let new_msgs = [...msgs];
+            new_msgs.push(successMsg);
+            return new_msgs;
+        })
+    }
 
     const selectComponent = (schema,fieldName) => {
         if (schema.type === "uint")
@@ -33,7 +42,7 @@ const DynamicForm = (props) => {
 
         // Reset error tracking
         setErrors([]);
-        setSubmitSuccess(false);
+        setSuccessMsgs([]);
 
         // Prevent request to server
         e.preventDefault();
@@ -47,7 +56,7 @@ const DynamicForm = (props) => {
 
         // Create job
         axios.post(`${apiUrl}/create`,body,{"headers":{"Content-Type":"multipart/form-data"}}).then((response) => {
-            setSubmitSuccess("Successfully submitted form.");
+            addSuccessMessage("Successfully submitted form.");
         }).catch(() => {
             addError("Failed to submit form. Please try again soon.");
         });
@@ -62,26 +71,8 @@ const DynamicForm = (props) => {
                 }
             </div>
             <div class="card-body">
-                {
-                    errors.length > 0 ? 
-                        <div class="alert alert-danger">
-                            {
-                                errors.map((error) => {return <li>{error}</li>})
-                            }
-                        </div> 
-                    : 
-                    ""
-                }
-                {
-                    submitSuccess ? 
-                        <div class="alert alert-success">
-                        {
-                            submitSuccess
-                        }
-                        </div>
-                    :
-                    ""
-                }
+                <AlertsBox items={errors} type="error"/>
+                <AlertsBox items={successMsgs} type="success"/>
                 <form action="#" method="POST" onSubmit={submitForm}>
                 <div class="row mt-2">
                     <label>Select job type</label>

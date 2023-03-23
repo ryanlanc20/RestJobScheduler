@@ -1,17 +1,18 @@
 import {useState,useEffect} from "react";
 import axios from "axios";
 import JobListItem from "./JobListItem.js";
+import AlertsBox from "../alerts/AlertsBox.js";
 import {apiUrl} from "../../constants.js";
 
 const JobsList = (props) => {
     const [jobs,setJobs] = useState({});
-    const [errors,setErrors] = useState({});
+    const [errors,setErrors] = useState([]);
     const [lastUpdateTime,setLastUpdateTime] = useState();
 
-    const addError = (type,msg) => {
+    const addError = (msg) => {
         setErrors((errorMessages) => {
-            let newErrors = {...errorMessages};
-            newErrors[type] = msg;
+            let newErrors = [...errorMessages];
+            newErrors.push(msg);
             return newErrors;
         });
     };
@@ -44,7 +45,7 @@ const JobsList = (props) => {
         axios.get(`${apiUrl}/jobs`).then((response) => {
             setJobs(response.data);
         }).catch(() => {
-            addError("failedFetchJobs","Failed to fetch jobs list from server");
+            addError("Failed to fetch jobs list from server");
         });
 
         props.eventListener.on("notification",(msg) => {
@@ -70,16 +71,7 @@ const JobsList = (props) => {
                     <button className="btn btn-primary float-end" onClick={props.toggleCreateJobForm}>Create job</button>
                 </div>
                 <div class="card-body">
-                        {
-                            Object.keys(errors).length > 0 ? 
-                                <div className="alert alert-danger">
-                                    <ul>
-                                        {Object.values(errors).map((error) => <li>{error}</li>)}
-                                    </ul>
-                                </div>
-                            : 
-                                ""
-                        }
+                        <AlertsBox items={errors} type="error"/>
                         <i>Last update: {lastUpdateTime}</i>
                         <table className="table table-striped mt-4">
                             <thead>
